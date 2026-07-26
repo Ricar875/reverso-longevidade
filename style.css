@@ -1,1 +1,72 @@
+// NAVEGAÇÃO ENTRE PÁGINAS
+const navBtns = document.querySelectorAll('.nav-btn');
+const pages = document.querySelectorAll('.page');
+
+navBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        navBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        const pageId = this.dataset.page;
+        pages.forEach(p => p.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+    });
+});
+
+// FUNÇÃO PARA NAVEGAR (usada nos botões)
+function navigateTo(pageId) {
+    navBtns.forEach(b => b.classList.remove('active'));
+    document.querySelector(`.nav-btn[data-page="${pageId}"]`).classList.add('active');
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageId).classList.add('active');
+}
+
+// CALCULAR IDADE BIOLÓGICA
+function calcularIdade() {
+    const idade = parseInt(document.getElementById('idadeInput').value);
+    if (isNaN(idade) || idade < 18 || idade > 120) {
+        alert('Por favor, insira uma idade válida (18-120).');
+        return;
+    }
+    const bio = (idade * 0.88 + 2.5).toFixed(1);
+    const diff = (bio - idade).toFixed(1);
+    document.getElementById('cronoIdade').textContent = idade;
+    document.getElementById('bioIdade').textContent = bio;
+    document.getElementById('diferenca').textContent = diff < 0 ? diff : '+' + diff;
+    document.getElementById('resultadoIdade').style.display = 'block';
+}
+
+// CHECK-IN
+function checkin() {
+    alert('✅ Check-in registrado com sucesso! Continue assim! 🎉');
+}
+
+// ALTERNAR ABAS DE MEMBROS
+function switchAuth(tab) {
+    document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.auth-tab[onclick*="${tab}"]`).classList.add('active');
+    document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+    document.getElementById('auth-' + tab).classList.add('active');
+}
+
+// GERAR HÁBITOS (dinâmico)
+document.addEventListener('DOMContentLoaded', function() {
+    const habitos = [
+        'Comer açúcar todo dia', 'Não tomar sol', 'Beber pouca água',
+        'Viver estressado(a)', 'Passar o dia sentado(a)', 'Excesso de produtos na pele',
+        'Jantar tarde', 'Álcool e/ou cigarro', 'Comer ultraprocessados',
+        'Café logo ao acordar', 'Beliscar o tempo inteiro', 'Não bater meta de proteína',
+        'Consumir embutidos', 'Não fazer musculação', 'Mexer no celular antes de dormir',
+        'Relacionamentos tóxicos', 'Não ter propósito', 'Respiração curta'
+    ];
+    const grid = document.getElementById('listaHabitos');
+    if (grid) {
+        grid.innerHTML = habitos.map((h, i) => `
+            <div class="habito-card">
+                <div class="num">${String(i+1).padStart(2,'0')}</div>
+                <h4>${h}</h4>
+                <p>⬆ Reversão: clique para ver</p>
+            </div>
+        `).join('');
+    }
+});
 
